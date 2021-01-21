@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Course.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Course.Api.Controllers.CourseController.Post(Course.Api.Models.Courses.CourseViewModelInput)">
+            <summary>
+            This service allows register course for the authenticated user
+            </summary>
+            <param name="courseViewModelInput"></param>
+            <returns>Returns status 201 and user data</returns>
+        </member>
+        <member name="M:Course.Api.Controllers.CourseController.Get">
+            <summary>
+            This service get all the activities courses of the user 
+            </summary>
+            <returns>Returns status ok and data of course of user</returns>
+        </member>
+        <member name="M:Course.Api.Controllers.UserController.Login(Course.Api.Models.Users.LoginViewModelInput)">
+            <summary>
+            This service authenticates a registered user
+            </summary>
+            <param name="loginViewModelInput"></param>
+            <returns>Returns status ok, data of the user and the token in access case </returns>
+        </member>
+    </members>
+</doc>
