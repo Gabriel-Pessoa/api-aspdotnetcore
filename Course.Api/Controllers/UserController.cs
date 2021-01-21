@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Course.Api.Models.Users;
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Course.Api.Filters;
 using Course.Api.Models;
-using Course.Api.Filters;
-using System.Text;
+using Course.Api.Models.Users;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
+using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Course.Api.Controllers
 {
