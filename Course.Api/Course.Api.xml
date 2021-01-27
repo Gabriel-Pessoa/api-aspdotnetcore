@@ -21,8 +21,14 @@
             <summary>
             This service authenticates a registered user
             </summary>
-            <param name="loginViewModelInput"></param>
+            <param name="loginViewModelInput">View model of login</param>
             <returns>Returns status ok, data of the user and the token in access case </returns>
+        </member>
+        <member name="M:Course.Api.Controllers.UserController.Register(Course.Api.Models.Users.RegisterViewModelInput)">
+            <summary>
+            This service allows you to register a user
+            </summary>
+            <param name="registerViewModelInput">View model of register of login</param>
         </member>
     </members>
 </doc>
