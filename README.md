@@ -1,6 +1,6 @@
 # API Web ASP.NET Core
 
-Criamos uma API de cursos que realiza o cadastro de usuário e cursos. Cada curso está relacionado a um usuário, e este precisa está registrado e logado para adicionar novos cursos. Após o login um token é gerado permitindo a inclusão de novos cursos; esse token expira em um dia, para continuar com a inclusão de cursos  o usuário precisará logar novamente. A API persiste os dados num Banco SQL-Server. Utilizamos alguns Design Patterns para tornar a aplicação escalável e de fácil manutenção, por exemplo: Decorator nas classes do Controller; uma classe "ErrorsList" genérica que captura falhas de validação do Data Annotations e envia junto com a BadRequest; Injeção de Dependência e Inversão de Controle facilitando testes e aproveitamento de código.  
+Criamos uma API de cursos que realiza o cadastro de usuário e cursos. Cada curso está relacionado a um usuário, e este precisa está registrado e logado para adicionar novos cursos. Após o login um token é gerado permitindo a inclusão de novos cursos; esse token expira em um dia. Para continuar com a inclusão de cursos  o usuário precisará logar novamente. A API persiste os dados num Banco SQL-Server. Utilizamos alguns Design Patterns para tornar a aplicação escalável e de fácil manutenção, por exemplo: Decorator nas classes do Controller; uma classe "ErrorsList" genérica que captura falhas de validação do Data Annotations e envia junto com a BadRequest; Injeção de Dependência e Inversão de Controle facilitando testes e aproveitamento de código.  
 
 
 
