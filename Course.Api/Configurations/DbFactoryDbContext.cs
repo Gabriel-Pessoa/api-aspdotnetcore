@@ -9,7 +9,7 @@ namespace Course.Api.Configurations
         public CourseDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<CourseDbContext>();
-            optionsBuilder.UseSqlServer("Server=localhost;Database=COURSE;user=ga;password=guitarraj2");
+            optionsBuilder.UseSqlServer("Server=localhost;Database=course;user=sa;password=App@220030"); 
             CourseDbContext context = new CourseDbContext(optionsBuilder.Options);
 
             return context;

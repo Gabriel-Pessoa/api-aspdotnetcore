@@ -28,7 +28,8 @@
             <summary>
             This service allows you to register a user
             </summary>
-            <param name="registerViewModelInput">View model of register of login</param>
+            <param name="registerViewModelInput">View model of login register</param>
+            <returns>Returns status create and input model </returns>
         </member>
     </members>
 </doc>

@@ -1,8 +1,10 @@
-﻿using Course.Api.Models.Courses;
+﻿using Course.Api.Business.Entities;
+using Course.Api.Business.Repositories;
+using Course.Api.Models.Courses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -13,6 +15,13 @@ namespace Course.Api.Controllers
     [Authorize]
     public class CourseController : ControllerBase
     {
+        private readonly ICourseRepository _courseRepository;
+
+        public CourseController(ICourseRepository courseRepository)
+        {
+            _courseRepository = courseRepository;
+        }
+
         /// <summary>
         /// This service allows register course for the authenticated user
         /// </summary>
@@ -24,7 +33,16 @@ namespace Course.Api.Controllers
         [Route("")]
         public async Task<IActionResult> Post(CourseViewModelInput courseViewModelInput)
         {
+            CourseEntity course = new CourseEntity();
+
+            course.Name = courseViewModelInput.Name;
+            course.Description = courseViewModelInput.Description;
             var userCode = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            course.UserCode = userCode;
+
+            _courseRepository.Add(course);
+            _courseRepository.Commit();
+
             return Created("", courseViewModelInput);
         }
 
@@ -38,16 +56,15 @@ namespace Course.Api.Controllers
         [Route("")]
         public async Task<IActionResult> Get()
         {
-            var courses = new List<CourseViewModelOutput>();
-
-            //var userCode = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-
-            courses.Add(new CourseViewModelOutput()
-            {
-                Login = "",
-                Description = "teste",
-                Name = "teste"
-            });
+            var userCode = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            
+            var courses = _courseRepository.GetForUser(userCode)
+                .Select(s => new CourseViewModelOutput()
+                {
+                    Name = s.Name,
+                    Description = s.Description,
+                    Login = s.User.Login
+                });
 
             return Ok(courses);
         }

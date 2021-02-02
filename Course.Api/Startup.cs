@@ -1,21 +1,21 @@
+using Course.Api.Business.Repositories;
+using Course.Api.Configurations;
+using Course.Api.Infraestruture.Data;
+using Course.Api.Infraestruture.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Course.Api
 {
@@ -34,14 +34,14 @@ namespace Course.Api
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
             {
-                // Desabilito o padrão para customização
+                // Desabilito o padrï¿½o para customizaï¿½ï¿½o
                 options.SuppressModelStateInvalidFilter = true;
             });
 
             // Add Swagger. Informando e lendo arquivo de metadata na raiz do projeto "Course.Api.xml"
             services.AddSwaggerGen(c =>
             {
-                //Definindo Bearer como nosso esquema de segurança, acessado atraves do objeto Header na propriedade Authorization
+                //Definindo Bearer como nosso esquema de seguranï¿½a, acessado atraves do objeto Header na propriedade Authorization
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
@@ -63,13 +63,13 @@ namespace Course.Api
                             }
                         },
                         Array.Empty<string>()
-                    }               
+                    }
                 });
 
-                // Nessa linha abaixo, ele está usando uma técnica de refection para capturar o nome do projeto (Course.Api) e concatena com o ".xml".
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"; 
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile); // Define o diretório, no caso o diretório do projeto
-                c.IncludeXmlComments(xmlPath); // inclui os comentários no Swagger
+                // Nessa linha abaixo, ele estï¿½ usando uma tï¿½cnica de refection para capturar o nome do projeto (Course.Api) e concatena com o ".xml".
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile); // Define o diretï¿½rio, no caso o diretï¿½rio do projeto
+                c.IncludeXmlComments(xmlPath); // inclui os comentï¿½rios no Swagger
             });
 
             var secret = Encoding.ASCII.GetBytes(Configuration.GetSection("JwtConfigurations:Secret").Value); // Ler a chave e converte em bytes
@@ -83,7 +83,7 @@ namespace Course.Api
             {
                 x.RequireHttpsMetadata = false; // Desativa https
                 x.SaveToken = true; // "Cache" do token
-                // Parâmetros de configuração
+                // Parï¿½metros de configuraï¿½ï¿½o
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -92,6 +92,14 @@ namespace Course.Api
                     ValidateAudience = false
                 };
             });
+
+            services.AddDbContext<CourseDbContext>(options => 
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+            services.AddScoped<IUserRepository, UserRepository>(); // o framework invoca o new internamente
+            services.AddScoped<ICourseRepository, CourseRepository>(); // o framework invoca o new internamente
+            services.AddScoped<IAuthenticationService, JwtService>(); // o framework invoca o new internamente
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,7 +114,7 @@ namespace Course.Api
 
             app.UseRouting();
 
-            app.UseAuthentication(); // configuração para conseguir mapear
+            app.UseAuthentication(); // configuraï¿½ï¿½o para conseguir mapear
 
             app.UseAuthorization();
 
@@ -118,10 +126,10 @@ namespace Course.Api
             app.UseSwagger(); // Incluindo o middleware do Swagger
 
             app.UseSwaggerUI(c =>
-            {   
-                // Configura a rota do Swagger. Foi gerado anteriormente o arquivo no middleware e aqui configuramos para lê-lo
+            {
+                // Configura a rota do Swagger. Foi gerado anteriormente o arquivo no middleware e aqui configuramos para lï¿½-lo
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Course APi");
-                c.RoutePrefix = string.Empty; //swagger (exclui a necessidade de digita na routa swagger para acessá-lo)
+                c.RoutePrefix = string.Empty; //swagger (exclui a necessidade de digita na routa swagger para acessï¿½-lo)
             });
         }
     }
